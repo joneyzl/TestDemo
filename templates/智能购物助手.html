@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://127.0.0.1:5000/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能购物助手</title>
+    <script src="./智能购物助手_files/jquery-3.6.0.min.js.download"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 60%;
+            max-width: 700px;
+            min-width: 400px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #00796b;
+            letter-spacing: 2px;
+        }
+        .logo span {
+            color: #ff9800;
+            font-size: 3rem;
+        }
+        h1 {
+            color: #00796b;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        label {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #00796b;
+            color: white;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #004d40;
+        }
+        .chat-log {
+            flex: 1;
+            overflow-y: auto;
+            max-height: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 20px 0;
+            background-color: #f9f9f9;
+            width: 100%;
+        }
+        .chat-message {
+            margin: 10px 0;
+        }
+        .chat-message p {
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 70%;
+        }
+        .user-message p {
+            background-color: #e0f7fa;
+            color: #00796b;
+            align-self: flex-end;
+        }
+        .bot-message p {
+            background-color: #f0f4f8;
+            color: #555;
+            align-self: flex-start;
+        }
+        .bot-message .response {
+            text-align: left;
+            font-size: 0.9rem;
+        }
+        .bot-message .response-item {
+            margin: 8px 0;
+            padding: 10px;
+            background-color: #e0f2f1;
+            border-radius: 5px;
+        }
+        .bot-message .response-item strong {
+            color: #00796b;
+        }
+        .footer {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <span>🛒</span> 智能购物助手
+        </div>
+        <div class="chat-log" id="chat-log">
+            <div class="chat-message bot-message">
+                <p>欢迎使用智能购物助手！请输入您想要购买的产品名称。</p>
+            </div>
+        <div class="chat-message user-message"><p>华为MateXT</p></div><div class="chat-message bot-message"><div class="response">
+                                    <div class="response-item">
+                                        <strong>商品类别:</strong> 电子产品
+                                    </div>
+                                    <div class="response-item">
+                                        <strong>总购买次数:</strong> 17
+                                    </div>
+                                    <div class="response-item">
+                                        <strong>近期购买次数:</strong> 14
+                                    </div>
+                                    <div class="response-item">
+                                        <strong>杀熟概率:</strong> 0.22
+                                    </div>
+                                    <div class="response-item">
+                                        <strong>购物指南:</strong> 1.商品可能遇到的问题：根据您选择的产品 "华为MateXT"，常见问题可能包括：问题1: 系统卡顿或应用崩溃。问题2: 电池寿命短或充电速度慢。问题3: 屏幕触控不灵敏或显示问题。2. 解决这些问题的建议：针对上述问题，以下是一些建议：建议1: 定期更新系统和应用，清理缓存，避免安装来源不明的应用。建议2: 使用原装充电器和数据线，避免过度充电；检查电池健康状况。建议3: 检查是否有屏幕保护膜干扰，重启设备，或联系售后服务进行专业检测。
+                                    </div>
+                                </div></div></div>
+        <label for="product_name">请输入产品名称:</label>
+        <input type="text" id="product_name" placeholder="例如：华为MateXT">
+        <button id="submit">提交</button>
+        <div class="footer">Powered by 智能购物助手 © 2024</div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#submit').click(function() {
+                const productName = $('#product_name').val();
+                if (productName.trim() === '') {
+                    addMessage('bot', '请输入产品名称。');
+                    return;
+                }
+                addMessage('user', productName);
+
+                $.ajax({
+                    url: '/get_product_info',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ product_name: productName }),
+                    success: function(response) {
+                        if (response.error) {
+                            addMessage('bot', response.error);
+                        } else {
+                            let responseMessage = `
+                                <div class="response">
+                                    <div class="response-item">
+                                        <strong>商品类别:</strong> ${response.category}
+                                    </div>
+                                    <div class="response-item">
+                                        <strong>总购买次数:</strong> ${response.total_count}
+                                    </div>
+                                    <div class="response-item">
+                                        <strong>近期购买次数:</strong> ${response.recent_count}
+                                    </div>
+                                    <div class="response-item">
+                                        <strong>杀熟概率:</strong> ${response.kill_risk}
+                                    </div>
+                                    <div class="response-item">
+                                        <strong>购物指南:</strong> ${response.model_response}
+                                    </div>
+                                </div>`;
+                            addMessage('bot', responseMessage);
+                        }
+                    },
+                    error: function() {
+                        addMessage('bot', '请求失败，请重试。');
+                    }
+                });
+            });
+
+            function addMessage(sender, message) {
+                const messageType = sender === 'user' ? 'user-message' : 'bot-message';
+                const messageHtml = `<div class="chat-message ${messageType}"><p>${message}</p></div>`;
+                $('#chat-log').append(messageHtml);
+                $('#chat-log').scrollTop($('#chat-log')[0].scrollHeight); // Scroll to bottom automatically
+            }
+        });
+    </script>
+
+</body></html>
